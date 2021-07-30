@@ -16,8 +16,8 @@ public class BalanceEnquiry {
 	
 	public void checkCurrentBalance()
 	{
-		int i=DisplayScreen.getInstance().displayPinVerification();
-		if(i==1)
+		DisplayScreen.getInstance().displayPinVerification();
+		if(WithdrawlData.getStatus()==1)
 		{
 			BalanceData.setStatus(true);
 		}
@@ -39,8 +39,8 @@ public class BalanceEnquiry {
 	}
 	public void checkSavingBalance()
 	{
-		int i=DisplayScreen.getInstance().displayPinVerification();
-		if(i==1)
+		DisplayScreen.getInstance().displayPinVerification();
+		if(WithdrawlData.getStatus()==1)
 		{
 			BalanceData.setStatus(true);
 		}
@@ -62,8 +62,8 @@ public class BalanceEnquiry {
 	}
 	public void checkCreditBalance()
 	{
-		int i=DisplayScreen.getInstance().displayPinVerification();
-		if(i==1)
+		DisplayScreen.getInstance().displayPinVerification();
+		if(WithdrawlData.getStatus()==1)
 		{
 			BalanceData.setStatus(true);
 		}

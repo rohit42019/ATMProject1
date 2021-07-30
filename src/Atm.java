@@ -45,9 +45,7 @@ public class Atm {
 						{
 							System.out.println("\t\tWrong PIN");
 						}
-						//update Table in database
-						DBQueries.setQ("update table1 set CurrentBalance=?, SavingBalance=?, CreditBalance=? where PIN=?");
-						DBQueries.getInstance().updateTable(con);
+					
 						
 						DisplayScreen.getInstance().displayWelcome();
 						System.out.println("\t\tEnter C to continue else any other charater to exit");

@@ -16,7 +16,7 @@ public class Withdrawl {
 		}
 		return(w);
 	}
-	public int currentWithdrawl()
+	public void currentWithdrawl()
 	{
 		DisplayScreen.getInstance().spaceGenerator();
 		DisplayScreen.getInstance().displayWelcome();
@@ -34,27 +34,24 @@ public class Withdrawl {
 			if(WithdrawlData.getResult()==0 && WithdrawlData.getAmount()<=100000)
 			{
 				WithdrawlData.setNetBalance(BalanceData.getCurrentBalance(),WithdrawlData.getAmount());
-				int i=DisplayScreen.getInstance().displayPinVerification();
-				
-				if(i==1)
+				if(WithdrawlData.getNetBalance()<0)
 				{
-					DisplayScreen.getInstance().displayPinVerificationSuccess();
-					if(WithdrawlData.getNetBalance()<0)
-					{
-						WithdrawlData.setStatus(0);
-					}
-					else
-					{
-						System.out.println("\n\t\tPlease wait Transaction is being Processed...");						
-						Thread.sleep(9000);
-						BalanceData.setCurrentBalance(WithdrawlData.getNetBalance());
-						WithdrawlData.setStatus(1);
-					}
+					WithdrawlData.setStatus(0);
 				}
 				else
 				{
-					WithdrawlData.setStatus(i);
-				}					
+					DisplayScreen.getInstance().displayPinVerification();
+					if(WithdrawlData.getStatus()==1)
+					{
+						DisplayScreen.getInstance().displayPinVerificationSuccess();
+						System.out.println("\n\t\tPlease wait Transaction is being Processed...");						
+						Thread.sleep(9000);
+						BalanceData.setCurrentBalance(WithdrawlData.getNetBalance());
+						//update Table in database
+						DBQueries.setQ("update table1 set CurrentBalance=? where PIN=?");
+						DBQueries.getInstance().updateCurrentBalance(DBConnection.getInstance().callingDBConnection());
+					}
+				}
 				
 			}
 			else
@@ -68,10 +65,9 @@ public class Withdrawl {
 		{
 			WithdrawlData.setStatus(-2);
 		}
-		return(WithdrawlData.getStatus());
 		
 	}
-	public int savingWithdrawl()
+	public void savingWithdrawl()
 	{
 		DisplayScreen.getInstance().spaceGenerator();
 		DisplayScreen.getInstance().displayWelcome();
@@ -90,25 +86,23 @@ public class Withdrawl {
 			if(WithdrawlData.getResult()==0 && WithdrawlData.getAmount()<=25000)
 			{
 				WithdrawlData.setNetBalance(BalanceData.getSavingBalance(),WithdrawlData.getAmount());
-				int i=DisplayScreen.getInstance().displayPinVerification();
-				if(i==1)
+				if(WithdrawlData.getNetBalance()<0)
 				{
-					if(WithdrawlData.getNetBalance()<0)
-					{
-						WithdrawlData.setStatus(0);
-					}
-					else
+					WithdrawlData.setStatus(0);
+				}
+				else 
+				{
+					DisplayScreen.getInstance().displayPinVerification();
+					if(WithdrawlData.getStatus()==1)
 					{
 						DisplayScreen.getInstance().displayPinVerificationSuccess();
 						System.out.println("\n\t\tPlease wait Transaction is being Processed...");
 						Thread.sleep(9000);
 						BalanceData.setSavingBalance(WithdrawlData.getNetBalance());
-						WithdrawlData.setStatus(1);
-					}	
-				}
-				else
-				{
-					WithdrawlData.setStatus(i);
+						//update Table in database
+						DBQueries.setQ("update table1 set SavingBalance=? where PIN=?");
+						DBQueries.getInstance().updateSavingBalance(DBConnection.getInstance().callingDBConnection());
+					}
 				}
 			}
 			else
@@ -123,11 +117,9 @@ public class Withdrawl {
 		{
 			WithdrawlData.setStatus(-2);
 		}
-		
-		return(WithdrawlData.getStatus());
 	}
 	
-	public int creditWithdrawl()
+	public void creditWithdrawl()
 	{
 
 		DisplayScreen.getInstance().spaceGenerator();
@@ -147,33 +139,29 @@ public class Withdrawl {
 			if(WithdrawlData.getResult()==0 && WithdrawlData.getAmount()<=25000)
 			{
 				WithdrawlData.setNetBalance(BalanceData.getCreditBalance(),WithdrawlData.getAmount());
-				int i=DisplayScreen.getInstance().displayPinVerification();
-				if(i==1)
+				if(WithdrawlData.getNetBalance()<0)
 				{
-					if(WithdrawlData.getNetBalance()<0)
+					WithdrawlData.setStatus(0);
+				}
+				else
+				{
+					DisplayScreen.getInstance().displayPinVerification();
+					if(WithdrawlData.getStatus()==1)
 					{
-						WithdrawlData.setStatus(0);
-					}
-					else
-					{
-						
 						DisplayScreen.getInstance().displayPinVerificationSuccess();
 						System.out.println("\n\t\tPlease wait Transaction is being Processed...");
 						Thread.sleep(9000);
 						BalanceData.setCreditBalance(WithdrawlData.getNetBalance());
-						WithdrawlData.setStatus(1);
+						//update Table in database
+						DBQueries.setQ("update table1 set CreditBalance=? where PIN=?");
+						DBQueries.getInstance().updateCreditBalance(DBConnection.getInstance().callingDBConnection());
 					}
-				}
-				else
-				{
-					WithdrawlData.setStatus(i);
 				}
 			}
 			else
 			{
 				WithdrawlData.setStatus(-1);
 			}
-			
 		}
 		catch(InterruptedException e)
 		{}
@@ -181,6 +169,5 @@ public class Withdrawl {
 		{
 			WithdrawlData.setStatus(-2);
 		}
-		return(WithdrawlData.getStatus());
 	}
 }

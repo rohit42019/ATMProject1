@@ -87,21 +87,21 @@ public class DisplayScreen {
 					if(WithdrawlData.getStatus()>0)
 						displayWithdrawlSuccess("Current");
 					else
-						displayWithdrawlError(WithdrawlData.getStatus());
+						displayWithdrawlError();
 			break;
 			
 			case 2: Withdrawl.getInstance().savingWithdrawl();
 					if(WithdrawlData.getStatus()>0)
 						displayWithdrawlSuccess("Saving");
 					else
-						displayWithdrawlError(WithdrawlData.getStatus());
+						displayWithdrawlError();
 			break;
 			
 			case 3: Withdrawl.getInstance().creditWithdrawl();
 					if(WithdrawlData.getStatus()>0)
 						displayWithdrawlSuccess("Credit");
 					else
-						displayWithdrawlError(WithdrawlData.getStatus());
+						displayWithdrawlError();
 			break;
 			
 			default:System.out.println("\n\t\tWrong Choice");
@@ -147,36 +147,6 @@ public class DisplayScreen {
 		}
 		
 	}
-	public int displayPinVerification()
-	{
-		int i=0;
-		try
-		{
-			System.out.print("\n\t\tEnter PIN : ");
-			DisplayData.setPin(sc.nextInt());
-			if(Pin.getInstance().verifyPin(DisplayData.getPin()))
-			{
-				i=1;
-			}
-			else
-			{
-				i=-3;
-			}
-		}
-		catch(Exception e4)
-		{
-			i=-2;
-		}
-		return(i);
-	}
-	public void displayPinVerificationError()
-	{
-		System.out.println("\n\t\tWrong PIN entered");
-	}
-	public void displayPinVerificationSuccess()
-	{
-		System.out.println("\n\t\tPIN successfully verified");
-	}
 	public void displayPinchange(Connection con)
 	{
 		DisplayScreen.getInstance().spaceGenerator();
@@ -209,6 +179,35 @@ public class DisplayScreen {
 			sc.nextLine();
 		}
 	}
+	public void displayPinVerification()
+	{
+		try
+		{
+			System.out.print("\n\t\tEnter PIN : ");
+			DisplayData.setPin(sc.nextInt());
+			if(Pin.getInstance().verifyPin(DisplayData.getPin()))
+			{
+				WithdrawlData.setStatus(1);
+			}
+			else
+			{
+				WithdrawlData.setStatus(-3);
+			}
+		}
+		catch(Exception e4)
+		{
+			WithdrawlData.setStatus(-2);
+		}
+	}
+	public void displayPinVerificationError()
+	{
+		System.out.println("\n\t\tWrong PIN entered");
+	}
+	public void displayPinVerificationSuccess()
+	{
+		System.out.println("\n\t\tPIN successfully verified");
+	}
+	
 	
 	public void displayPinChangeError()
 	{
@@ -221,13 +220,13 @@ public class DisplayScreen {
 		System.out.println("\t\tPress C to continue or any other character for Main Menu ");
 		Atm.setCh(sc.next().charAt(0));
 	}
-	public void displayWithdrawlError(int a)
+	public void displayWithdrawlError()
 	{
-		if(a==0)
+		if(WithdrawlData.getStatus()==0)
 			System.out.println("\n\t\t!!INSUFFICIENT AMOUNT (CANNOT MAKE TRANSACTION)");
-		else if(a==-1)
+		else if(WithdrawlData.getStatus()==-1)
 			System.out.println("\n\t\t!!!Invalid Amount Entered!!!");
-		else if(a==-2)
+		else if(WithdrawlData.getStatus()==-2)
 			System.out.println("\n\t\tInvalid Input, only numbers");
 		else
 		{

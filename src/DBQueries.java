@@ -45,15 +45,44 @@ public class DBQueries {
 	
 		return(b);
 	}
-	public void updateTable(Connection con)
+	public void updateCurrentBalance(Connection con)
 	{
 		try
 		{
 			PreparedStatement prst=con.prepareStatement(getQ());
 			prst.setLong(1,BalanceData.getCurrentBalance());
-			prst.setLong(2,BalanceData.getSavingBalance());
-			prst.setLong(3,BalanceData.getCreditBalance());
-			prst.setInt(4,PinData.getActivePin());
+			prst.setInt(2,PinData.getActivePin());
+			prst.executeUpdate();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+				
+	}
+	public void updateSavingBalance(Connection con)
+	{
+		try
+		{
+			PreparedStatement prst=con.prepareStatement(getQ());
+			prst.setLong(1,BalanceData.getSavingBalance());
+			prst.setInt(2,PinData.getActivePin());
+			prst.executeUpdate();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+				
+	}
+	public void updateCreditBalance(Connection con)
+	{
+		try
+		{
+			PreparedStatement prst=con.prepareStatement(getQ());
+	
+			prst.setLong(1,BalanceData.getCreditBalance());
+			prst.setInt(2,PinData.getActivePin());
 			prst.executeUpdate();
 		}
 		catch(Exception e)
